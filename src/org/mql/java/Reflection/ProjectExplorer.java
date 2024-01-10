@@ -1,7 +1,10 @@
 package org.mql.java.Reflection;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Vector;
-
 public class ProjectExplorer {
 	Vector<String > data ;
 	public Vector<String> getData() {
@@ -24,7 +27,7 @@ public class ProjectExplorer {
 		pathClasses = new Vector<File>();
 	}
 	public void  projectExtractor(String projectPath) {
-		File projectFile = new File(projectPath,"src");
+		File projectFile = new File(projectPath,"bin");
 			  extractDiretories(projectFile);
 		 }
 	public void  extractDiretories( File fileDirectory) {
@@ -37,43 +40,69 @@ public class ProjectExplorer {
 		 }
 			 else{
 				 data.add(file.getName());
-				 pathClasses.add(file);
+				pathClasses.add(file);
 				 
 			 }
-         
 }
 	} 
 	 public void extractAll() {
 	        System.out.println("Directories: " + result);
 	        System.out.println("Files: " + data);
-	       // System.out.println("Files: "+pathClasses );
+	       System.out.println("paths: "+pathClasses );
 	        
 	  
-	    }
-}
-	/*public void projectRelationClass() {
-		 for(File path : pathClasses) {
-				try {
-					String filePath = path.getAbsolutePath();
-					String relativePath = filePath.replace("C:\\projects java\\AmartiRiffi_El Mehdi_Generics\\src\\", "");
-					String qualifiedClassName =  relativePath
+	 }    
+	 public  Class<?>[] loadCLasses(String projectPath) {
+		 ArrayList<Class<?>> loadedClasses = new ArrayList<>();
+	        for (File path : pathClasses) {
+	            try {
+	                String classPath = path.getAbsolutePath();
+	                String className = classPath.replace(projectPath + "\\bin\\", "");
+	                String qualifiedClassName = className
 	                        .replace(File.separator, ".")
-	                        .replace(".java", "") ;
-					
-					
-					Class <?> c1 = Class.forName(qualifiedClassName);
-			if(c1.getSuperclass() == null) {
-                System.out.println("la classe object comme classe mere ");
-                }
-			else {
-				System.out.println("la classe:"+c1.getName()+"herite de la classe:"+c1.getSuperclass().getName());
-			}
-				}
-			 catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-		 }
-		
-	 }*/
+	                        .replace(".class", "");
+	                URLClassLoader classLoader = createClassLoader(projectPath + "\\bin\\");
+	                Class<?> loadedClass = classLoader.loadClass(qualifiedClassName);
+	                loadedClasses.add(loadedClass);
+	               // System.out.println("Classe chargée avec succès: " + loadedClass.getName());
+	            } catch (ClassNotFoundException | MalformedURLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+
+	        // Convertir la liste en tableau avant de le retourner
+	        return loadedClasses.toArray(new Class[0]);//tableau de taille 0 qui stocke les noms de classe  s
+	 }
+	 
+	 private static URLClassLoader createClassLoader(String classPath) throws MalformedURLException {
+	        File file = new File(classPath);
+	        URL url = file.toURI().toURL();//Convertit le chemin de classe en une URL. Cela est nécessaire
+	        //)car le URLClassLoader s'attend à une URL pour charger les classes.
+	        return new URLClassLoader(new URL[]{url});//url et uri 
+}
+	 public void  extractRelationCLasses(String projectName) {
+		 Class<?> superCLasse ;
+		 Class<?>[] data = loadCLasses(projectName);
+		 //heritage 
+		 for (int i = 0; i < data.length; i++) {
+			 if(data[i].getSuperclass() !=null) {
+				 superCLasse = data[i].getSuperclass();
+				 if(superCLasse.equals(data[i].getSuperclass())) {
+	            	System.out.println("la classe: "+data[i].getName()+" herite de la classe: "+superCLasse);
+				 }
+	                }
+	            else {
+	            	  System.out.println("la classe object comme classe mere ");
+	            	
+	            }
+		}
+	 }
+	 
+
+}
+
+	
+
+
 	
 

@@ -6,11 +6,15 @@ public class Examples {
 		exp01();
 	}
 	public void exp01() {
+		//String pathName =;
 		 ProjectExplorer explorer = new ProjectExplorer();
 	    explorer.projectExtractor("C:\\projects java\\AmartiRiffi_El Mehdi_Generics");
 	    explorer.extractAll();
-	  XmlWriter write = new  XmlWriter();
-			  write.writeXML(explorer.getResult(),explorer.getData());
+	    explorer.extractRelationCLasses("C:\\projects java\\AmartiRiffi_El Mehdi_Generics");
+	 
+	   
+	XmlWriter write = new  XmlWriter();
+    write.writeXML(explorer.getResult(),explorer.getData());
 	}
 	
 	

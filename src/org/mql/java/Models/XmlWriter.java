@@ -17,12 +17,10 @@ public class XmlWriter {
 	}
 	public  void writeXML(Vector<String> result,Vector<String> data){
 		try {
-            // Créer un nouveau document XML
+         
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             org.w3c.dom.Document doc = dBuilder.newDocument();
-
-            // Élément racine
             org.w3c.dom.Element rootElement = doc.createElement("liste");
             doc.appendChild(rootElement);
             
@@ -34,10 +32,10 @@ public class XmlWriter {
                 name.appendChild(doc.createTextNode(d));
                 directories.appendChild(name);
             }
-            org.w3c.dom.Element files= doc.createElement("files");
+            org.w3c.dom.Element files= doc.createElement("classes");
             rootElement.appendChild(files);
             for (String f: data) {
-            	 org.w3c.dom. Element name = doc.createElement("file");
+            	 org.w3c.dom. Element name = doc.createElement("class");
                name.appendChild(doc.createTextNode(f));
                 files.appendChild(name);
             }
@@ -45,19 +43,12 @@ public class XmlWriter {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-
-            // Spécifier le fichier de sortie
             StreamResult resultFile = new StreamResult(new File("C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml"));
-
-            // Enregistrer le document dans le fichier XML
             transformer.transform(source, resultFile);
-
             System.out.println("Fichier XML créé avec succès!");
-           
 		}
 		catch (Exception e) {
 			System.out.println("l'erreur "+e.getMessage());
-			
 		}
 	}
 	
