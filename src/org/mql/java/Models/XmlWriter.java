@@ -1,6 +1,8 @@
 package org.mql.java.Models;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Vector;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -8,6 +10,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.mql.java.Reflection.ClassExtractor;
 import org.w3c.dom.Element;
 
 public class XmlWriter {
@@ -15,7 +18,7 @@ public class XmlWriter {
 	public XmlWriter() {
 		
 	}
-	public  void writeXML(Vector<String> result,Vector<String> data){
+	public  void writeXML(Vector<String> result,Vector<String> data,ArrayList<Class<?>> loadedclass){
 		try {
          
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -39,6 +42,34 @@ public class XmlWriter {
                name.appendChild(doc.createTextNode(f));
                 files.appendChild(name);
             }
+            org.w3c.dom.Element fields= doc.createElement("fields");
+            rootElement.appendChild(fields);
+            for (int i = 0; i < loadedclass.size(); i++) {
+            	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
+            	  Vector<String> fieldVector = extract.extractFields();
+            	
+            	  
+            	  for (String field : fieldVector) {
+            	        org.w3c.dom.Element fieldElement = doc.createElement("field");
+            	        fieldElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
+            	        fieldElement.appendChild(doc.createTextNode(field));
+            	        fields.appendChild(fieldElement);
+            	  }
+            	}
+            org.w3c.dom.Element methods= doc.createElement("methods");
+            rootElement.appendChild(methods);
+            for (int i = 0; i < loadedclass.size(); i++) {
+          	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
+          	 Vector<String> methodVector = extract.extractMethods();
+          	 for (String method : methodVector) {
+     	        org.w3c.dom.Element methodElement = doc.createElement("method");
+     	       methodElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
+     	      methodElement.appendChild(doc.createTextNode(method));
+     	       methods.appendChild(methodElement);
+     	  }
+          	 
+            }
+            
             
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

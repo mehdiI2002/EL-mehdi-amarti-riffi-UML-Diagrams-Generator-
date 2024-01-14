@@ -11,6 +11,7 @@ private Vector<String> resultMethods;
 	public ClassExtractor(Class<?> data ) {
 		this.data = data  ;
 		resultFields = new Vector<String>();
+		resultMethods = new Vector<String>();
 		
 	}
 	public  Vector<String> extractFields() {

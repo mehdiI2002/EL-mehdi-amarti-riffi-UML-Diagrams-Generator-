@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 public class ProjectExplorer {
 	Vector<String > data ;
+	ArrayList<Class<?>> loadedClasses;
 	public Vector<String> getData() {
 		return data;
 	}
@@ -54,7 +55,7 @@ public class ProjectExplorer {
 
 	}    
 	public  Class<?>[] loadCLasses(String projectPath) {
-		ArrayList<Class<?>> loadedClasses = new ArrayList<>();
+		 loadedClasses = new ArrayList<>();
 		for (File path : pathClasses) {
 			try {
 				String classPath = path.getAbsolutePath();
@@ -131,6 +132,12 @@ public class ProjectExplorer {
 
 		}
 
+	}
+	public ArrayList<Class<?>> getLoadedClasses() {
+		return loadedClasses;
+	}
+	public void setLoadedClasses(ArrayList<Class<?>> loadedClasses) {
+		this.loadedClasses = loadedClasses;
 	}
 
 

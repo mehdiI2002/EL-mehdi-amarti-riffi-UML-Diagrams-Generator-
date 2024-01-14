@@ -8,17 +8,19 @@ import org.mql.java.Reflection.ProjectExplorer;
 import org.mql.java.views.EntitiesPanel;
 public class Examples {
 	public Examples() {
-		exp02();
+		exp01();
 	}
 	public void exp01() {
+		String projectPath = "C:\\projects java\\Amarti riffi El mehdi - Reflection";
 		 ProjectExplorer explorer = new ProjectExplorer();
-	    explorer.projectExtractor("C:\\projects java\\AmartiRiffi_El Mehdi_Generics");
-	    explorer.extractAll();
-	    explorer.extractRelationCLasses("C:\\projects java\\AmartiRiffi_El Mehdi_Generics");
-	// explorer.afficher("C:\\projects java\\AmartiRiffi_El Mehdi_Generics");
-	
+	    explorer.projectExtractor(projectPath);
+	  explorer.loadCLasses(projectPath);
+ 
+	  
 	XmlWriter write = new  XmlWriter();
-    write.writeXML(explorer.getResult(),explorer.getData());
+    write.writeXML(explorer.getResult(),explorer.getData(),explorer.getLoadedClasses());
+   
+    
 	}
 	public void exp02() {
 		 ProjectExplorer explorer = new ProjectExplorer();
