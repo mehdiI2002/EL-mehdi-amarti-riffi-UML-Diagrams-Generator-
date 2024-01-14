@@ -18,7 +18,7 @@ public class XmlWriter {
 	public XmlWriter() {
 		
 	}
-	public  void writeXML(Vector<String> result,Vector<String> data,ArrayList<Class<?>> loadedclass){
+	public  void writeXML(Vector<String> result,ArrayList<Class<?>> loadedclass){
 		try {
          
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -35,42 +35,27 @@ public class XmlWriter {
                 name.appendChild(doc.createTextNode(d));
                 directories.appendChild(name);
             }
-            org.w3c.dom.Element files= doc.createElement("classes");
-            rootElement.appendChild(files);
-            for (String f: data) {
-            	 org.w3c.dom. Element name = doc.createElement("class");
-               name.appendChild(doc.createTextNode(f));
-                files.appendChild(name);
-            }
-            org.w3c.dom.Element fields= doc.createElement("fields");
-            rootElement.appendChild(fields);
+            org.w3c.dom.Element classesName= doc.createElement("classes");
+            rootElement.appendChild(classesName);
             for (int i = 0; i < loadedclass.size(); i++) {
-            	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
-            	  Vector<String> fieldVector = extract.extractFields();
-            	
-            	  
-            	  for (String field : fieldVector) {
-            	        org.w3c.dom.Element fieldElement = doc.createElement("field");
-            	        fieldElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
-            	        fieldElement.appendChild(doc.createTextNode(field));
-            	        fields.appendChild(fieldElement);
-            	  }
-            	}
-            org.w3c.dom.Element methods= doc.createElement("methods");
-            rootElement.appendChild(methods);
-            for (int i = 0; i < loadedclass.size(); i++) {
-          	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
-          	 Vector<String> methodVector = extract.extractMethods();
-          	 for (String method : methodVector) {
-     	        org.w3c.dom.Element methodElement = doc.createElement("method");
-     	       methodElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
-     	      methodElement.appendChild(doc.createTextNode(method));
-     	       methods.appendChild(methodElement);
+            	 org.w3c.dom. Element className = doc.createElement("class");
+            	 className.setAttribute("className", loadedclass.get(i).getSimpleName());
+               classesName.appendChild(className);
+               ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
+         	  Vector<String> fieldVector = extract.extractFields();
+         	 Vector<String> methodVector = extract.extractMethods();
+         	 for (String field : fieldVector) {
+     	        org.w3c.dom.Element fieldElement = doc.createElement("field");
+     	        fieldElement.appendChild(doc.createTextNode(field));
+     	        className.appendChild(fieldElement);
      	  }
-          	 
+       	 for (String method : methodVector) {
+            org.w3c.dom.Element methodElement = doc.createElement("method");
+          methodElement.appendChild(doc.createTextNode(method));
+          className.appendChild(methodElement);
+            	 }
             }
-            
-            
+           
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -84,4 +69,32 @@ public class XmlWriter {
 	}
 	
 }
+	 /*  org.w3c.dom.Element fields= doc.createElement("fields");
+    rootElement.appendChild(fields);
+    for (int i = 0; i < loadedclass.size(); i++) {
+    	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
+    	  Vector<String> fieldVector = extract.extractFields();
+    	
+    	  
+    	  for (String field : fieldVector) {
+    	        org.w3c.dom.Element fieldElement = doc.createElement("field");
+    	        fieldElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
+    	        fieldElement.appendChild(doc.createTextNode(field));
+    	        fields.appendChild(fieldElement);
+    	  }
+    	}
+    org.w3c.dom.Element methods= doc.createElement("methods");
+    rootElement.appendChild(methods);
+    for (int i = 0; i < loadedclass.size(); i++) {
+    	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
+    	 Vector<String> methodVector = extract.extractMethods();
+    	 for (String method : methodVector) {
+         org.w3c.dom.Element methodElement = doc.createElement("method");
+        methodElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
+       methodElement.appendChild(doc.createTextNode(method));
+        methods.appendChild(methodElement);
+    }
+    	 
+    }*/
+
 
