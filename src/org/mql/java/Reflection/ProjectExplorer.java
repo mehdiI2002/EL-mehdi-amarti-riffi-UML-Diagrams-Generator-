@@ -43,7 +43,6 @@ public class ProjectExplorer {
 			else{
 				data.add(file.getName());
 				pathClasses.add(file);
-
 			}
 		}
 	} 
@@ -99,7 +98,6 @@ public class ProjectExplorer {
 			} 
 		}
 		//implementation  interface
-		
 		//agregation 
 		for (int i = 0; i < data.length; i++) {
 			Field[] fields = data[i].getDeclaredFields();
@@ -113,8 +111,7 @@ public class ProjectExplorer {
 				}
 			}
 		}
-		//composition 
-		
+		//composition 	
 	}
 	public Vector<String> simpleNameCLasse (String projectPath) {
      Class<?>[] loadedClass = loadCLasses(projectPath);
@@ -138,6 +135,12 @@ public class ProjectExplorer {
 	}
 	public void setLoadedClasses(ArrayList<Class<?>> loadedClasses) {
 		this.loadedClasses = loadedClasses;
+	}
+	public void afficheChemin() {
+		for (int i = 0; i < pathClasses.size(); i++) {
+			System.out.println(pathClasses.get(i));
+			
+		}
 	}
 
 

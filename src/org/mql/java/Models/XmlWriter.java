@@ -69,32 +69,4 @@ public class XmlWriter {
 	}
 	
 }
-	 /*  org.w3c.dom.Element fields= doc.createElement("fields");
-    rootElement.appendChild(fields);
-    for (int i = 0; i < loadedclass.size(); i++) {
-    	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
-    	  Vector<String> fieldVector = extract.extractFields();
-    	
-    	  
-    	  for (String field : fieldVector) {
-    	        org.w3c.dom.Element fieldElement = doc.createElement("field");
-    	        fieldElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
-    	        fieldElement.appendChild(doc.createTextNode(field));
-    	        fields.appendChild(fieldElement);
-    	  }
-    	}
-    org.w3c.dom.Element methods= doc.createElement("methods");
-    rootElement.appendChild(methods);
-    for (int i = 0; i < loadedclass.size(); i++) {
-    	  ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
-    	 Vector<String> methodVector = extract.extractMethods();
-    	 for (String method : methodVector) {
-         org.w3c.dom.Element methodElement = doc.createElement("method");
-        methodElement.setAttribute("classeName", loadedclass.get(i).getSimpleName());
-       methodElement.appendChild(doc.createTextNode(method));
-        methods.appendChild(methodElement);
-    }
-    	 
-    }*/
-
-
+	
