@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-public class LabledTextField extends JPanel  implements ActionListener{
+public class LabledTextField extends JPanel {
 	private static final long serialVersionUID = 1L;
 	 private JTextField t1;
 	public LabledTextField(String label, int size) {
@@ -29,11 +29,7 @@ public class LabledTextField extends JPanel  implements ActionListener{
 		JLabel l1 = (JLabel) getComponent(0);
 		l1.setPreferredSize(new Dimension(labelsize,l1.getPreferredSize().height));
 	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		
-	}
+	
 	
 
 }

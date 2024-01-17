@@ -1,4 +1,5 @@
 package org.mql.java.Test;
+import java.awt.BorderLayout;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -12,17 +13,17 @@ public class Examples{
 	public Examples() {
 		exp05();
 	}
-	
 	public void exp01() {
-		String projectPath = "C:\\projects java\\Amarti Riffi El mehdi - JUnit";
+		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
 		 ProjectExplorer explorer = new ProjectExplorer();
-	    explorer.projectExtractor(projectPath);
-	  explorer.loadCLasses(projectPath);
-	explorer.afficheChemin();
-	XmlWriter write = new  XmlWriter();
-    write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
+	   explorer.projectExtractor(projectPath);
+	explorer.extractHeritageRelation(projectPath);
+	XmlParser parse = new XmlParser();
+	parse.parseRelations("C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml");
+	parse.afficherRelations();
+  XmlWriter write = new  XmlWriter();
+	   write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
 	}
-
 	public void exp02() {
 		String projectPath = "C:\\projects java\\Amarti Riffi El mehdi - JUnit";
 		 ProjectExplorer explorer = new ProjectExplorer();
@@ -49,7 +50,7 @@ public class Examples{
         frame.setVisible(true);
 	}
 	public void exp04() {
-		String projectPath = "C:\\projects java\\Amarti Riffi El mehdi - JUnit";
+		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
 		String filePath = "C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml";
 		 ProjectExplorer explorer = new ProjectExplorer();
 	    explorer.projectExtractor(projectPath);
@@ -57,20 +58,38 @@ public class Examples{
 	  XmlWriter write = new  XmlWriter();
 	    write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
 	  EntitiesPanel panelEntity = new EntitiesPanel(explorer.getLoadedClasses(), filePath);
+	   
 	  JFrame frame = new JFrame("Diagramme de classe");
       frame.setSize(300, 400);
+      frame.setLayout(new BorderLayout());
       JScrollPane scroll = new JScrollPane(panelEntity);
       scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-      frame.getContentPane().add(scroll);
-      frame.pack();
+      frame.getContentPane().add(scroll,BorderLayout.CENTER);
+     
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.setVisible(true);
+     
+      frame.pack();
+     frame. setExtendedState(JFrame.MAXIMIZED_BOTH);
+     frame.setVisible(true);
 	 // System.out.println(explorer.simpleNameCLasse(projectPath));
 	  //EntitiesPanel panel = new EntitiesPanel(explorer.)
 		
 	}
 	public void exp05() {
 		FirstInterface interfaceF = new FirstInterface();
+	}
+	public void exp06() {
+		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
+		 ProjectExplorer explorer = new ProjectExplorer();
+	   explorer.projectExtractor(projectPath);
+	explorer.extractHeritageRelation(projectPath);
+ XmlWriter write = new  XmlWriter();
+	   write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
+		String filePath = "C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml";
+		XmlParser parse = new XmlParser();
+		
+		System.out.println(parse.getRelations());
+		//explorer.extractHeritageRelation(projectPath);
 	}
 	
 	

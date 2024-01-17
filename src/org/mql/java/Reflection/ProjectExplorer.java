@@ -1,6 +1,5 @@
 package org.mql.java.Reflection;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -9,8 +8,16 @@ import java.util.Vector;
 public class ProjectExplorer {
 	Vector<String > data ;
 	ArrayList<Class<?>> loadedClasses;
+	Vector<Class<?>> relations = new Vector<>();
+	
 	public Vector<String> getData() {
 		return data;
+	}
+	public Vector<Class<?>> getRelations() {
+		return relations;
+	}
+	public void setRelations(Vector<Class<?>> relations) {
+		this.relations = relations;
 	}
 	public void setData(Vector<String> data) {
 		this.data = data;
@@ -27,6 +34,7 @@ public class ProjectExplorer {
 		data = new Vector<String>();
 		result = new Vector<>();
 		pathClasses = new Vector<File>();
+		//relations = new Vector<ClassRelation>();
 	}
 	public void  projectExtractor(String projectPath) {
 		File projectFile = new File(projectPath,"bin");
@@ -50,7 +58,7 @@ public class ProjectExplorer {
 		System.out.println("Directories: " + result);
 		System.out.println("Files: " + data);
 		System.out.println("paths: "+pathClasses );
-       
+       //System.out.println("relations:"+ relations);
 
 	}    
 	public  Class<?>[] loadCLasses(String projectPath) {
@@ -65,59 +73,42 @@ public class ProjectExplorer {
 				URLClassLoader classLoader = createClassLoader(projectPath + "\\bin\\");
 				Class<?> loadedClass = classLoader.loadClass(qualifiedClassName);
 				loadedClasses.add(loadedClass);
-			//	System.out.println("Classe chargée avec succès: " + loadedClass.getSimpleName());
 			} catch (ClassNotFoundException | MalformedURLException e) {
 				e.printStackTrace();
 			}
 		}
-
-		// Convertir la liste en tableau avant de le retourner
-		return loadedClasses.toArray(new Class[0]);//tableau de taille 0 qui stocke les noms de classe  s
+		return loadedClasses.toArray(new Class[0]);
 	}
 
 	private static URLClassLoader createClassLoader(String classPath) throws MalformedURLException {
 		File file = new File(classPath);
-		URL url = file.toURI().toURL();//Convertit le chemin de classe en une URL. Cela est nécessaire
-		//)car le URLClassLoader s'attend à une URL pour charger les classes.
-		return new URLClassLoader(new URL[]{url});//url et uri 
+		URL url = file.toURI().toURL();
+		return new URLClassLoader(new URL[]{url});
 	}
-	public void  extractRelationCLasses(String projectName) {
-
-		Class<?> superClasse;
-		Class<?>[] data = loadCLasses(projectName);
-
-		// Héritage 
-		for (int i = 0; i < data.length; i++) {
-			if (data[i].getSuperclass() != null) {
-				superClasse = data[i].getSuperclass();
-				for (int j = 0; j < data.length; j++) {
-					if (data[j].getSimpleName().equals(superClasse.getSimpleName())) {
-						System.out.println("La classe : " + data[i].getSimpleName() + " hérite de la classe : " + superClasse.getSimpleName());
-					}
-				}
-			} 
-		}
-		//implementation  interface
-		//agregation 
-		for (int i = 0; i < data.length; i++) {
-			Field[] fields = data[i].getDeclaredFields();
-			for(Field f : fields) {
-				if(!f.getType().isPrimitive()) {
-					for (int j = 0; j < data.length; j++) {
-						if(data[j].getSimpleName().equals(f.getType().getSimpleName())) {
-							System.out.println("relation d agregation entre  "+data[j].getSimpleName()+" et  "+f.getType().getSimpleName());				
-						}
-					}
-				}
-			}
-		}
-		//composition 	
+	public Vector<Class<?>> extractHeritageRelation(String projectName) {
+	    Class<?>[] classes = loadCLasses(projectName);
+	    for (int i = 0; i < classes.length; i++) {
+	        Class<?> superClass = classes[i].getSuperclass();
+	        if (superClass != null && !superClass.equals(Object.class) && !superClass.getName().startsWith("java.")) {
+	            for (int j = 0; j < classes.length; j++) {
+	                if (!classes[j].getName().startsWith("java.") && verifierHeritage(superClass, classes[j])) {
+	                                  	relations.add(superClass);
+	                                	relations.add(classes[j]);      
+	                } 
+	            }
+	        }
+	    }
+	    return relations;
+	}	
+	public boolean verifierHeritage(Class<?> mereClass, Class<?> filleClass) {
+	    Class<?> mere = filleClass.getSuperclass();
+	    return mere != null && mere.equals(mereClass);
 	}
 	public Vector<String> simpleNameCLasse (String projectPath) {
      Class<?>[] loadedClass = loadCLasses(projectPath);
 	   Vector<String> data = new  Vector<String>();
 	   for (int i = 0; i < loadedClass.length; i++) {
-		   data.add(loadedClass[i].getSimpleName());
+		   data.add(loadedClass[i].getName());
 		
 	}
 	   return data;
@@ -142,6 +133,7 @@ public class ProjectExplorer {
 			
 		}
 	}
+
 
 
 }
