@@ -5,25 +5,22 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import org.mql.java.Models.XmlWriter;
 import org.mql.java.Reflection.ProjectExplorer;
-import org.mql.java.controller.XmlParser;
+import org.mql.java.parser.XmlParser;
 import org.mql.java.views.EntitiesPanel;
 import org.mql.java.views.Entity;
 import org.mql.java.views.FirstInterface;
 public class Examples{
 	public Examples() {
-		exp05();
+		exp08();
 	}
 	public void exp01() {
-		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
-		 ProjectExplorer explorer = new ProjectExplorer();
-	   explorer.projectExtractor(projectPath);
-	explorer.extractHeritageRelation(projectPath);
-	XmlParser parse = new XmlParser();
-	parse.parseRelations("C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml");
-	parse.afficherRelations();
-  XmlWriter write = new  XmlWriter();
-	   write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
-	}
+	String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
+	  ProjectExplorer explorer = new ProjectExplorer();
+	  explorer.projectExtractor(projectPath);
+	  explorer.loadCLasses(projectPath);
+	XmlWriter write = new  XmlWriter();
+	   write.writeXML(explorer.getResult(),explorer.getLoadedClasses()); 
+		}
 	public void exp02() {
 		String projectPath = "C:\\projects java\\Amarti Riffi El mehdi - JUnit";
 		 ProjectExplorer explorer = new ProjectExplorer();
@@ -38,10 +35,10 @@ public class Examples{
 		frame.setLocationRelativeTo(null);
 	}
 	public void exp03() {
-		String projectPath = "C:\\projects java\\Amarti Riffi El mehdi - JUnit";
+		String projectPath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\mql\\java\\P03_AnnotationsAndReflection";
 		XmlParser parse = new XmlParser();
 		parse.parseClasses("C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml","Author");
-        Entity e = new Entity("Author",parse.getFields(),parse.getMethods());
+        Entity e = new Entity("Author",parse.getFields(),parse.getMethods(),parse.getTypefields(),parse.getTypeMethods());
 		JFrame frame = new JFrame("Entity  Example");
         frame.setSize(300, 400);
         frame.getContentPane().add(e);
@@ -50,7 +47,7 @@ public class Examples{
         frame.setVisible(true);
 	}
 	public void exp04() {
-		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
+		String projectPath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\mql\\java\\P03_AnnotationsAndReflection";
 		String filePath = "C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml";
 		 ProjectExplorer explorer = new ProjectExplorer();
 	    explorer.projectExtractor(projectPath);
@@ -77,6 +74,7 @@ public class Examples{
 	}
 	public void exp05() {
 		FirstInterface interfaceF = new FirstInterface();
+		
 	}
 	public void exp06() {
 		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
@@ -90,6 +88,29 @@ public class Examples{
 		
 		System.out.println(parse.getRelations());
 		//explorer.extractHeritageRelation(projectPath);
+	}
+	void exp07() {
+		String projectPath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\mql\\java\\P03_AnnotationsAndReflection";
+		   ProjectExplorer explorer = new ProjectExplorer();
+		   explorer.projectExtractor(projectPath);
+		  explorer.loadCLasses(projectPath);
+		XmlWriter write = new  XmlWriter();
+		   write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
+		   XmlParser parse = new XmlParser();
+		   parse.parseClasses("C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml","Author");
+		     parse.getTypefields();
+		
+	}
+	void exp08() {
+		String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
+		  ProjectExplorer explorer = new ProjectExplorer();
+		  explorer.projectExtractor(projectPath);
+		  explorer.loadCLasses(projectPath);
+		  explorer.extractAgragation(projectPath);
+		  explorer.afficheAgregation();
+		  explorer.extractComposition(projectPath);
+		  explorer.afficheComposition();
+		
 	}
 	
 	

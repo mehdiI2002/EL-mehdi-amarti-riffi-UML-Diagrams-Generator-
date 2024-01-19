@@ -6,30 +6,30 @@ import java.util.Vector;
 
 public class ClassExtractor {
 private Class<?> data ;
-private Vector<String> resultFields;
-private Vector<String> resultMethods;
+private Vector<Field> resultFields;
+private Vector<Method> resultMethods;
+
 	public ClassExtractor(Class<?> data ) {
 		this.data = data  ;
-		resultFields = new Vector<String>();
-		resultMethods = new Vector<String>();
-		
+ 		resultFields = new Vector<>();
+		resultMethods = new Vector<>();	
 	}
-	public  Vector<String> extractFields() {
+	public   Vector<Field> extractFields() {
 		Field fields[] = data.getDeclaredFields();
 		for(Field f : fields) {
-		  resultFields.add(f.getName());
-			
+		  resultFields.add(f);
 		}
-		return resultFields;
+		return  resultFields;
 	}
-		public  Vector<String> extractMethods(){
+	public  Vector<Method> extractMethods(){
 			Method methods []= data.getDeclaredMethods(); 
 			for(Method m : methods) {
-			 resultMethods.add(m.getName());	
+			 resultMethods.add(m);	
 		
 			}
 			return resultMethods;
-		}
+		}	
+		
 	
 
 																																																}

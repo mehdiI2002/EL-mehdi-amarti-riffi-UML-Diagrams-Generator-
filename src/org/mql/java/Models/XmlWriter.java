@@ -1,5 +1,7 @@
 package org.mql.java.Models;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -40,17 +42,22 @@ public class XmlWriter {
             	 className.setAttribute("className", loadedclass.get(i).getSimpleName());
             	 classesName.appendChild(className);
                 ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
-                Vector<String> fieldVector = extract.extractFields();
-                Vector<String> methodVector = extract.extractMethods();
-         	 for (String field : fieldVector) {
+                Vector<Field> fieldVector = extract.extractFields();
+                Vector<Method> methodVector = extract.extractMethods();
+           
+             
+         	 for (Field field : fieldVector) {
      	        org.w3c.dom.Element fieldElement = doc.createElement("field");
-     	        fieldElement.appendChild(doc.createTextNode(field));
+     	        fieldElement.appendChild(doc.createTextNode(field.getName()));
      	        className.appendChild(fieldElement);
+     	        	 fieldElement.setAttribute("type", field.getType().getSimpleName());
+     	      
      	  }
-       	 for (String method : methodVector) {
+       	 for (Method method : methodVector) {
             org.w3c.dom.Element methodElement = doc.createElement("method");
-            methodElement.appendChild(doc.createTextNode(method));
+            methodElement.appendChild(doc.createTextNode(method.getName()));
             className.appendChild(methodElement);
+             methodElement.setAttribute("typeretour", method.getReturnType().getSimpleName());
             	 }
        
         
@@ -63,9 +70,7 @@ public class XmlWriter {
             Vector<Class<?>> relations = explorer.extractHeritageRelation(projectPath);
      	   
      	  for (int j = 1; j  <= relations.size() - 1; j += 2) {
-     		 String type = "heritage";
      	    org.w3c.dom.Element relation = doc.createElement("relation");
-     	   // relation.setAttribute("type", type);
      	    relation.setAttribute("classmere", (relations.get(j - 1).getSimpleName()));
      	    relation.setAttribute("classfille", (relations.get(j).getSimpleName()));
      	    elementRelations.appendChild(relation);

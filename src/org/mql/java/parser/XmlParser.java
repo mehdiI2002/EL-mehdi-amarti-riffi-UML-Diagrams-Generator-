@@ -1,4 +1,4 @@
-package org.mql.java.controller;
+package org.mql.java.parser;
 
 import java.io.File;
 import java.util.Vector;
@@ -15,14 +15,18 @@ public class XmlParser {
 	private Vector<String> fields;
 	private Vector<String> methods;
 	private Vector<String> relations;
+	private Vector<String> typefields;
+	private Vector<String> typeMethods;
 	public XmlParser() {
 		data = new Vector<String>();
 		fields = new Vector<String>();
 		methods = new Vector<String>();
 		relations = new Vector<String>();
+		typefields = new Vector<String>();
+		typeMethods = new Vector<String>();
 }
 	public Vector<String> parseClasses(String source,String className) {
-		data = new Vector<String>();
+		
 		try {
 			     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	            DocumentBuilder builder = factory.newDocumentBuilder();
@@ -36,19 +40,24 @@ public class XmlParser {
 	                String classNameValue = classElement.getAttribute("className");
 	                if(classNameValue.equals(className)) {
 	                data.add(classNameValue);
+	                
 	                NodeList childNodes = classElement.getChildNodes();
 	                     for (int j = 0; j < childNodes.getLength(); j++) {
 	                        Node childNode = childNodes.item(j);
 	                         if ( childNode.getNodeName().equals("field")) {
 	                        String fieldContent = childNode.getTextContent();
+	                        String typefield =((Element) childNode) .getAttribute("type");
 	                        fields.add( fieldContent);
+	                        typefields.add(typefield);
 	                    }
 	                }
 	                      for (int k = 0; k < childNodes.getLength(); k++) {
 	                	Node childNode = childNodes.item(k);
 	                	        if ( childNode.getNodeName().equals("method")) {
 		                        String methodContent = childNode.getTextContent();
+		                        String typeMethod =((Element) childNode) .getAttribute("typeretour");
 		                        methods.add( methodContent);
+		                       typeMethods.add(typeMethod);
 		                    }
 	                }
 	            }
@@ -61,6 +70,9 @@ public class XmlParser {
 			}
 		return data;
 	
+	}
+	public Vector<String> getTypefields() {
+		return typefields;
 	}
 	public Vector<String> parseRelations(String source ) {
 		try {
@@ -130,5 +142,15 @@ public class XmlParser {
 	public Vector<String> getMethods() {
 		return methods;
 	}
+	public void afficherTypeFields() {
+		for (int i = 0; i < typefields.size(); i++) {
+			System.out.println(typefields.get(i));
+			
+		}
+	}
+	public Vector<String> getTypeMethods() {
+		return typeMethods;
+	}
+	
 	
 }

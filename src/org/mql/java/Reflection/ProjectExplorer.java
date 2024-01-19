@@ -1,14 +1,32 @@
 package org.mql.java.Reflection;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 public class ProjectExplorer {
 	Vector<String > data ;
 	ArrayList<Class<?>> loadedClasses;
-	Vector<Class<?>> relations = new Vector<>();
+	Vector<Class<?>> relations;
+	Vector<String> attributs ;
+	Vector<String > result;
+	Vector<File> pathClasses;
+	 private HashMap<String, String>  agregations;
+	 private HashMap<String, String>  compositions;
+public ProjectExplorer() {
+		data = new Vector<String>();
+		result = new Vector<>();
+		pathClasses = new Vector<File>();
+		attributs = new Vector<String>();
+		relations = new Vector<>();
+		loadedClasses = new ArrayList<>();
+		agregations= new HashMap<>();
+		compositions = new HashMap<>();
+	}
 	
 	public Vector<String> getData() {
 		return data;
@@ -28,14 +46,8 @@ public class ProjectExplorer {
 	public void setResult(Vector<String> result) {
 		this.result = result;
 	}
-	Vector<String > result;
-	Vector<File> pathClasses;
-	public ProjectExplorer() {
-		data = new Vector<String>();
-		result = new Vector<>();
-		pathClasses = new Vector<File>();
-		//relations = new Vector<ClassRelation>();
-	}
+
+
 	public void  projectExtractor(String projectPath) {
 		File projectFile = new File(projectPath,"bin");
 		extractDiretories(projectFile);
@@ -58,11 +70,9 @@ public class ProjectExplorer {
 		System.out.println("Directories: " + result);
 		System.out.println("Files: " + data);
 		System.out.println("paths: "+pathClasses );
-       //System.out.println("relations:"+ relations);
-
 	}    
 	public  Class<?>[] loadCLasses(String projectPath) {
-		 loadedClasses = new ArrayList<>();
+		
 		for (File path : pathClasses) {
 			try {
 				String classPath = path.getAbsolutePath();
@@ -133,10 +143,69 @@ public class ProjectExplorer {
 			
 		}
 	}
+	public  void  extractAgragation(String projectName) {
+		Class<?>[] classes = loadCLasses(projectName);
+		
+		for (int i = 0; i < classes.length; i++) {
+			Field fields[] = classes[i].getDeclaredFields();
+			for(Field f : fields) {
+				if(!f.getType().isPrimitive() && !f.getType().getName().startsWith("java") &&  !Object[].class.equals(f.getType())
+						&& !Object.class.equals(f.getType())){
+					 String key =  f.getType().getSimpleName();
+	                    String value =   classes[i].getSimpleName();
+	                    agregations.put(key, value);
+				}
+				
+			}
+			
+		}
+	}
+	public void extractComposition(String projectName) {
+		Class<?>[] classes = loadCLasses(projectName);
+		for (int i = 0; i < classes.length; i++) {
+			Field fields[] = classes[i].getDeclaredFields();
+			for(Field f : fields) {
+						 int modifiers = f.getModifiers();
+			 if(!f.getType().isPrimitive() && !f.getType().getName().startsWith("java") &&  !Object[].class.equals(f.getType())
+						&& !Object.class.equals(f.getType())){
+				 if(Modifier.isFinal(modifiers)) {
+					 String key =f.getType().getSimpleName();
+					 String value =classes[i].getSimpleName();
+					  compositions.put(key,value);
+				 }
+			 }
 
-
-
+		   }
+		
+	}
+	}
+public void afficheAgregation() {
+	for (HashMap.Entry<String, String> entry : agregations.entrySet()) {
+        System.out.println(" Agregation Clé : " + entry.getKey() + ", Valeur : " + entry.getValue());
+    }
 }
+public void afficheComposition() {
+	for (HashMap.Entry<String, String> entry : compositions.entrySet()) {
+        System.out.println(" Composition Clé : " + entry.getKey() + ", Valeur : " + entry.getValue());
+}
+}
+}
+	
+		
+
+	
+  
+		   
+		    
+	
+	   
+	   
+   
+	
+
+
+
+
 
 
 

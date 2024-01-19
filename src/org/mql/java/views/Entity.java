@@ -19,13 +19,15 @@ public class Entity extends JPanel {
     private String nom;
     private Vector<String> attributs;
     private Vector<String> methods;
+   
 
-    public Entity(String nom, Vector<String> attributs, Vector<String> methods) {
+    public Entity(String nom, Vector<String> attributs, Vector<String> methods ,Vector<String>  attributsType,Vector<String> methodsType) {
         this.nom = nom;
         this.attributs = attributs;
         this.methods=methods;
+        
         setLayout(new FlowLayout(FlowLayout.CENTER));
-        JPanel panelGlobal = new JPanel();
+        JPanel panelGlobal = new JPanel(); 
         panelGlobal.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelGlobal.setLayout(new BoxLayout(panelGlobal, BoxLayout.Y_AXIS));
         add(panelGlobal);
@@ -35,18 +37,17 @@ public class Entity extends JPanel {
         panelLocal1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelLocal1.setPreferredSize(new Dimension(200, 30));
         panelGlobal.add(panelLocal1);
-
         JPanel panelLocal2 = new JPanel();
         panelLocal2.setLayout(new FlowLayout(FlowLayout.LEFT)); 
         panelLocal2.setAlignmentY(JPanel.TOP_ALIGNMENT);
         JTextArea attributsTextArea = new JTextArea();
         attributsTextArea.setEditable(false);
         attributsTextArea.setBackground(panelLocal2.getBackground()); 
+        int j=0;
         for (String attribut : attributs) {
-            attributsTextArea.append("+" + attribut + "\n");
+            attributsTextArea.append("+" + attribut+ " :  "+ attributsType.get(j)+"\n");
+            j++;
         }
-       
-       
         panelLocal2.add(attributsTextArea);
         panelLocal2.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK));
         panelGlobal.add(panelLocal2);
@@ -59,8 +60,10 @@ public class Entity extends JPanel {
         JTextArea methodsTextArea = new JTextArea();
         methodsTextArea.setEditable(false);
         methodsTextArea.setBackground(panelLocal3.getBackground()); 
+        int k= 0;
         for (String method : methods) {
-            methodsTextArea.append("+ " + method + "()\n");
+            methodsTextArea.append("+ " + method+"()"+" : "+methodsType.get(k) + "\n");
+            k++;
         }
         panelLocal3.add(methodsTextArea);
 

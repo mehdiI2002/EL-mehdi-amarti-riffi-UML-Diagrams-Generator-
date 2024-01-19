@@ -47,6 +47,7 @@ public void actionPerformed(ActionEvent e) {
       frame.pack();
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.setVisible(true);
+      frame. setExtendedState(JFrame.MAXIMIZED_BOTH);
 	 
     	
     }
