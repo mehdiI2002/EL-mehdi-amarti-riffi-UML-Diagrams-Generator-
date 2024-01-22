@@ -3,6 +3,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,8 +21,7 @@ public class XmlWriter {
 
 	public XmlWriter() {
 	}
-	//les classes et les packages
-	public  void writeXML(Vector<String> result,ArrayList<Class<?>> loadedclass){
+	public  void writeXML(Vector<String> result,ArrayList<Class<?>> loadedclass,String projectPath){
 		try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -44,14 +44,11 @@ public class XmlWriter {
                 ClassExtractor extract = new ClassExtractor(loadedclass.get(i));
                 Vector<Field> fieldVector = extract.extractFields();
                 Vector<Method> methodVector = extract.extractMethods();
-           
-             
          	 for (Field field : fieldVector) {
      	        org.w3c.dom.Element fieldElement = doc.createElement("field");
      	        fieldElement.appendChild(doc.createTextNode(field.getName()));
      	        className.appendChild(fieldElement);
      	        	 fieldElement.setAttribute("type", field.getType().getSimpleName());
-     	      
      	  }
        	 for (Method method : methodVector) {
             org.w3c.dom.Element methodElement = doc.createElement("method");
@@ -59,22 +56,35 @@ public class XmlWriter {
             className.appendChild(methodElement);
              methodElement.setAttribute("typeretour", method.getReturnType().getSimpleName());
             	 }
-       
-        
             }
        	 	org.w3c.dom.Element elementRelations = doc.createElement("relations");
        	 	rootElement.appendChild(elementRelations);
-            String projectPath = "C:\\projects java\\AmartiRiffi_El Mehdi_Generics";
    		 	ProjectExplorer explorer = new ProjectExplorer();
             explorer.projectExtractor(projectPath);
-            Vector<Class<?>> relations = explorer.extractHeritageRelation(projectPath);
-     	   
-     	  for (int j = 1; j  <= relations.size() - 1; j += 2) {
-     	    org.w3c.dom.Element relation = doc.createElement("relation");
-     	    relation.setAttribute("classmere", (relations.get(j - 1).getSimpleName()));
-     	    relation.setAttribute("classfille", (relations.get(j).getSimpleName()));
-     	    elementRelations.appendChild(relation);
-     	}
+            explorer.extractHeritage(projectPath);
+            explorer.extractComposition(projectPath);
+            explorer.extractAgragation(projectPath);;
+            HashMap<String, String> heritageMap =  explorer.getHeritageRelation();
+            for (HashMap.Entry<String, String> entry : heritageMap.entrySet()) {
+                org.w3c.dom.Element heritagerelations = doc.createElement("relationheritage");
+                heritagerelations.setAttribute("fille", entry.getKey());
+                heritagerelations.setAttribute("mere", entry.getValue());
+                elementRelations.appendChild(heritagerelations);
+            }
+            HashMap<String, String> compositionMap =  explorer.getCompositionRelations();
+            for (HashMap.Entry<String, String> elementsComposition : compositionMap.entrySet()) {
+                org.w3c.dom.Element compositionRelations = doc.createElement("relationcomposition");
+               compositionRelations.setAttribute("composée", elementsComposition.getKey());
+                compositionRelations.setAttribute("composite", elementsComposition.getValue());
+                elementRelations.appendChild(compositionRelations);
+            }
+            HashMap<String, String> agregationMap =  explorer.getAgregationRelations();
+            for (HashMap.Entry<String, String> elementsAgreation : agregationMap.entrySet()) {
+                org.w3c.dom.Element agregationRelations = doc.createElement("relationagregation");
+               agregationRelations.setAttribute("agregée", elementsAgreation.getKey());
+                agregationRelations.setAttribute("agregat", elementsAgreation.getValue());
+                elementRelations.appendChild(agregationRelations);
+            }
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);

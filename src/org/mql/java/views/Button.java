@@ -31,14 +31,24 @@ public void actionPerformed(ActionEvent e) {
         showDirectoryChooser(); 
     }
     if("Generate".equals(label)) {
-    	String projectPath = textField.getText();
+    
+     
+        
+        Menu menu = new Menu("diagramme de classe", "diagramme de packages", textField);
+       SecondInterface second = new SecondInterface();
+        second.setJMenuBar(menu.getMb());
+       
+    	
+    }
+}
+    /*String projectPath = textField.getText();
 		String filePath = "C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml";
 		ProjectExplorer explorer = new ProjectExplorer();
 	    explorer.projectExtractor(projectPath);
 	    explorer.loadCLasses(projectPath);
 	  XmlWriter write = new  XmlWriter();
-	    write.writeXML(explorer.getResult(),explorer.getLoadedClasses());
-	  EntitiesPanel panelEntity = new EntitiesPanel(explorer.getLoadedClasses(), filePath);
+	    write.writeXML(explorer.getResult(),explorer.getLoadedClasses(),projectPath);
+	  EntitiesPanel panelEntity = new EntitiesPanel(explorer.getLoadedClasses(), filePath,projectPath);
 	  JFrame frame = new JFrame("Diagramme de classe");
       frame.setSize(300, 400);
       JScrollPane scroll = new JScrollPane(panelEntity);
@@ -51,7 +61,7 @@ public void actionPerformed(ActionEvent e) {
 	 
     	
     }
-}
+}*/
 private void showDirectoryChooser() {
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

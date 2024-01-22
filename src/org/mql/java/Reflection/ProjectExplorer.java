@@ -9,14 +9,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 public class ProjectExplorer {
-	Vector<String > data ;
-	ArrayList<Class<?>> loadedClasses;
-	Vector<Class<?>> relations;
-	Vector<String> attributs ;
-	Vector<String > result;
-	Vector<File> pathClasses;
-	 private HashMap<String, String>  agregations;
-	 private HashMap<String, String>  compositions;
+	 private Vector<String > data ;
+	 private ArrayList<Class<?>> loadedClasses;
+	 private Vector<Class<?>> relations;
+	 private Vector<String> attributs ;
+	 private Vector<String > result;
+	 private Vector<File> pathClasses;
+	 private HashMap<String, String>  agregationRelations;
+	 private HashMap<String, String>  compositionRelations;
+	 private HashMap<String,String>  heritageRelation;
+public HashMap<String, String> getAgregationRelations() {
+		return agregationRelations;
+	}
+
+	public HashMap<String, String> getCompositionRelations() {
+		return compositionRelations;
+	}
+
+	public HashMap<String, String> getHeritageRelation() {
+		return heritageRelation;
+	}
+
 public ProjectExplorer() {
 		data = new Vector<String>();
 		result = new Vector<>();
@@ -24,8 +37,9 @@ public ProjectExplorer() {
 		attributs = new Vector<String>();
 		relations = new Vector<>();
 		loadedClasses = new ArrayList<>();
-		agregations= new HashMap<>();
-		compositions = new HashMap<>();
+		agregationRelations= new HashMap<>();
+		compositionRelations = new HashMap<>();
+		heritageRelation = new HashMap<>();
 	}
 	
 	public Vector<String> getData() {
@@ -95,21 +109,23 @@ public ProjectExplorer() {
 		URL url = file.toURI().toURL();
 		return new URLClassLoader(new URL[]{url});
 	}
-	public Vector<Class<?>> extractHeritageRelation(String projectName) {
+	public Vector<Class<?>> extractHeritage(String projectName) {
 	    Class<?>[] classes = loadCLasses(projectName);
 	    for (int i = 0; i < classes.length; i++) {
 	        Class<?> superClass = classes[i].getSuperclass();
 	        if (superClass != null && !superClass.equals(Object.class) && !superClass.getName().startsWith("java.")) {
 	            for (int j = 0; j < classes.length; j++) {
 	                if (!classes[j].getName().startsWith("java.") && verifierHeritage(superClass, classes[j])) {
-	                                  	relations.add(superClass);
-	                                	relations.add(classes[j]);      
+	                	String key = classes[j].getSimpleName();
+	                	String value = superClass.getSimpleName();
+	                    heritageRelation.put(key, value);
+	                                    
 	                } 
 	            }
 	        }
 	    }
 	    return relations;
-	}	
+	}
 	public boolean verifierHeritage(Class<?> mereClass, Class<?> filleClass) {
 	    Class<?> mere = filleClass.getSuperclass();
 	    return mere != null && mere.equals(mereClass);
@@ -145,7 +161,6 @@ public ProjectExplorer() {
 	}
 	public  void  extractAgragation(String projectName) {
 		Class<?>[] classes = loadCLasses(projectName);
-		
 		for (int i = 0; i < classes.length; i++) {
 			Field fields[] = classes[i].getDeclaredFields();
 			for(Field f : fields) {
@@ -153,7 +168,7 @@ public ProjectExplorer() {
 						&& !Object.class.equals(f.getType())){
 					 String key =  f.getType().getSimpleName();
 	                    String value =   classes[i].getSimpleName();
-	                    agregations.put(key, value);
+	                    agregationRelations.put(key, value);
 				}
 				
 			}
@@ -171,7 +186,7 @@ public ProjectExplorer() {
 				 if(Modifier.isFinal(modifiers)) {
 					 String key =f.getType().getSimpleName();
 					 String value =classes[i].getSimpleName();
-					  compositions.put(key,value);
+					  compositionRelations.put(key,value);
 				 }
 			 }
 
@@ -180,13 +195,18 @@ public ProjectExplorer() {
 	}
 	}
 public void afficheAgregation() {
-	for (HashMap.Entry<String, String> entry : agregations.entrySet()) {
+	for (HashMap.Entry<String, String> entry : agregationRelations.entrySet()) {
         System.out.println(" Agregation Clé : " + entry.getKey() + ", Valeur : " + entry.getValue());
     }
 }
 public void afficheComposition() {
-	for (HashMap.Entry<String, String> entry : compositions.entrySet()) {
+	for (HashMap.Entry<String, String> entry : compositionRelations.entrySet()) {
         System.out.println(" Composition Clé : " + entry.getKey() + ", Valeur : " + entry.getValue());
+}
+}
+public void afficheheritage() {
+	for (HashMap.Entry<String, String> entry : heritageRelation.entrySet()) {
+        System.out.println(" fille : " + entry.getKey() + ", mere : " + entry.getValue());
 }
 }
 }

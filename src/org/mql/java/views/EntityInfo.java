@@ -3,7 +3,11 @@ package org.mql.java.views;
 import javax.swing.JPanel;
 
 public class EntityInfo {
-    private String entityName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String entityName;
     private JPanel panel;
     private int index;
 
