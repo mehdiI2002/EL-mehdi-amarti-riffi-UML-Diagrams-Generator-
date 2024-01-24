@@ -66,22 +66,27 @@ public class Menu extends JMenuBar implements ActionListener {
 		classes.writeClasses(load.getLoadedClasses());
 		XmlFileCreator fileXml = new XmlFileCreator(builder);
 		fileXml.createXmlFile(filePath);
+
 		XmlParser parse = new XmlParser(filePath);
 		ParsePackages pack = new ParsePackages(parse);
 		pack.parsePackages();
 
 		SecondInterface second = new SecondInterface();
+
 		if (e.getSource().equals(i1)) {
 			EntitiesPanel panelEntity = new EntitiesPanel(projectPath, filePath);
-			panelEntity.drawEntities(load.getLoadedClasses());// parse classes
+			panelEntity.drawEntities(load.getLoadedClasses());
 
 			JScrollPane scroll = new JScrollPane(panelEntity);
 			scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			second.getContentPane().add(scroll);
 		} else if (e.getSource().equals(i2)) {
 			System.out.println(pack.getDirectories());
-			GenratePackages packages = new GenratePackages(pack.getDirectories());
-			second.getContentPane().add(packages);
+			GeneratePackages packages = new GeneratePackages(pack.getDirectories());
+			packages.drawPackages(filePath);
+			JScrollPane scroll = new JScrollPane(packages);
+			scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			second.getContentPane().add(scroll);
 
 		}
 

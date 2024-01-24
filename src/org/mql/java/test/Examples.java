@@ -9,8 +9,7 @@ public class Examples {
 
 	public void exp02() {
 		FirstInterface interfaceF = new FirstInterface();
-		interfaceF.drawFirstInterface(
-				"C:\\projects java\\Amarti Riffi El mehdi - UML Diagrams Generator\\resources\\file.xml");
+		interfaceF.drawFirstInterface("resources\\file.xml");
 
 	}
 
