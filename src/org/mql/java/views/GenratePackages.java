@@ -1,29 +1,28 @@
 package org.mql.java.views;
 
+import java.awt.GridLayout;
 import java.util.Vector;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 public class GenratePackages extends JPanel {
 	private static final long serialVersionUID = 1L;
-	Vector<String> packageName;
-	public GenratePackages(Vector<String> packagesName,String filePath ) {
-	        for (int i = 0; i < packagesName.size()-1; i+=2) {
-	          Package  p = new Package(packagesName.get(i));
-	               add(p);
-	               if(packagesName.get(i+1)!=null) {
-	                     Package p1 = new Package(packagesName.get(i+1));
-	                     p.getBody().add(p1);
-	               }
-	               else {
-	            	   break;
-	               }
-	               revalidate();
-	               repaint(); 
+	Vector<String> packagesName;
 
-	        }
+	public GenratePackages(Vector<String> packagesName) {
+		this.packagesName = packagesName;
 	}
 
-	
+	public void drawPackages(String filePath) {
+		int nbr = packagesName.size();
+		int cols = 3;
+		int rows = (int) Math.ceil((double) nbr / cols);
+		setLayout(new GridLayout(rows, cols, 120, 50));
+		for (int i = 0; i < packagesName.size(); i++) {
+			Package p = new Package(packagesName.get(i));
+			p.drawPackage();
+			add(p);
+
+		}
+	}
 }
