@@ -19,6 +19,7 @@ public class LabledTextField extends JPanel {
 		t1 = new JTextField(size);
 		add(l1);
 		add(t1);
+
 	}
 
 	public JTextField getT1() {

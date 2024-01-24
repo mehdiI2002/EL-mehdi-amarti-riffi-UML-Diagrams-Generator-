@@ -3,6 +3,7 @@ package org.mql.java.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -26,18 +27,19 @@ public class Menu extends JMenuBar implements ActionListener {
 	JTextField textField;
 	JMenuBar mb;
 	String filePath;
+	private JFrame frame;
 
-	public Menu(String d1, String d2, JTextField textField, String filePath) {
+	public Menu(String d1, String d2, JTextField textField, String filePath, JFrame frame) {
 		this.d1 = d1;
 		this.d2 = d2;
 		this.textField = textField;
 		this.filePath = filePath;
+		this.frame = frame;
 
 		mb = new JMenuBar();
 		menu = new JMenu("Menu Diagrammes");
 		i1 = new JMenuItem(d1);
 		i2 = new JMenuItem(d2);
-
 	}
 
 	public void addMenu() {
@@ -71,24 +73,29 @@ public class Menu extends JMenuBar implements ActionListener {
 		ParsePackages pack = new ParsePackages(parse);
 		pack.parsePackages();
 
-		SecondInterface second = new SecondInterface();
-
 		if (e.getSource().equals(i1)) {
 			EntitiesPanel panelEntity = new EntitiesPanel(projectPath, filePath);
 			panelEntity.drawEntities(load.getLoadedClasses());
 
 			JScrollPane scroll = new JScrollPane(panelEntity);
 			scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			second.getContentPane().add(scroll);
+			frame.getContentPane().removeAll();
+			frame.setContentPane(scroll);
+			frame.pack();
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		} else if (e.getSource().equals(i2)) {
 			System.out.println(pack.getDirectories());
 			GeneratePackages packages = new GeneratePackages(pack.getDirectories());
 			packages.drawPackages(filePath);
 			JScrollPane scroll = new JScrollPane(packages);
 			scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			second.getContentPane().add(scroll);
+			frame.setContentPane(scroll);
+			frame.pack();
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		}
+		frame.getContentPane().revalidate();
+		frame.getContentPane().repaint();
 
 	}
 
@@ -99,4 +106,9 @@ public class Menu extends JMenuBar implements ActionListener {
 	public void setMb(JMenuBar mb) {
 		this.mb = mb;
 	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
 }

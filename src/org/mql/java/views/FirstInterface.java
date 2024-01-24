@@ -29,7 +29,7 @@ public class FirstInterface extends JFrame {
 		titre.setFont(new Font("Arial", Font.ITALIC, 20));
 		titre.setAlignmentX(Component.CENTER_ALIGNMENT);
 		container.add(titre);
-		LabledTextField labeled = new LabledTextField("Projet Path", 30, 100);
+		LabledTextField labeled = new LabledTextField("Projet Path", 70, 120);
 		container.add(labeled);
 		container.add(Box.createVerticalGlue());
 		Button button1 = new Button("Browse", labeled.getT1(), filePath);

@@ -19,6 +19,7 @@ public class Button extends JButton implements ActionListener {
 		this.textField = textField;
 		this.filePath = filePath;
 		addActionListener(this);
+
 	}
 
 	@Override
@@ -27,11 +28,14 @@ public class Button extends JButton implements ActionListener {
 			showDirectoryChooser();
 		}
 		if ("Generate".equals(label)) {
-			Menu menu = new Menu("diagramme de classe", "diagramme de package", textField, filePath);
-			menu.addMenu();
+
 			SecondInterface second = new SecondInterface();
+			Menu menu = new Menu("diagramme de classe", "diagramme de package", textField, filePath, second);
+			menu.addMenu();
+
 			second.setJMenuBar(menu.getMb());
 		}
+
 	}
 
 	private JTextField showDirectoryChooser() {
