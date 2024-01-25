@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import org.mql.java.Models.WriteClasses;
 import org.mql.java.Models.WriteDirectories;
+import org.mql.java.Models.WriteRelations;
 import org.mql.java.Models.XmlDocumentBuilder;
 import org.mql.java.Models.XmlFileCreator;
 import org.mql.java.parser.ParsePackages;
@@ -66,6 +67,10 @@ public class Menu extends JMenuBar implements ActionListener {
 
 		WriteClasses classes = new WriteClasses(builder);
 		classes.writeClasses(load.getLoadedClasses());
+
+		WriteRelations relations = new WriteRelations(builder);
+		relations.writeRelations(projectPath);
+
 		XmlFileCreator fileXml = new XmlFileCreator(builder);
 		fileXml.createXmlFile(filePath);
 

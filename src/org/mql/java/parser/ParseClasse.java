@@ -22,6 +22,7 @@ public class ParseClasse {
 		methods = new Vector<String>();
 		typefields = new Vector<String>();
 		typeMethods = new Vector<String>();
+
 	}
 
 	public void parseClasse(String className) {
@@ -40,6 +41,7 @@ public class ParseClasse {
 						String typefield = ((Element) childNode).getAttribute("type");
 						fields.add(fieldContent);
 						typefields.add(typefield);
+
 					}
 				}
 				for (int k = 0; k < childNodes.getLength(); k++) {
@@ -49,6 +51,7 @@ public class ParseClasse {
 						String typeMethod = ((Element) childNode).getAttribute("typeretour");
 						methods.add(methodContent);
 						typeMethods.add(typeMethod);
+
 					}
 				}
 

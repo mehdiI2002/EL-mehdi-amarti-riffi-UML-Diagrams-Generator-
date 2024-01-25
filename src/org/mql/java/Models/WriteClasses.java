@@ -33,7 +33,9 @@ public class WriteClasses {
 				writeMembersClass(write, "method", method.getName(), className, "typeretour",
 						method.getReturnType().getSimpleName());
 			}
+
 		}
+
 	}
 
 	private void writeMembersClass(XmlDocumentBuilder write, String baliseName, String baliseContenu,
@@ -44,4 +46,5 @@ public class WriteClasses {
 		memberElement.setAttribute(nameAttribute, typeAttribute);
 
 	}
+
 }

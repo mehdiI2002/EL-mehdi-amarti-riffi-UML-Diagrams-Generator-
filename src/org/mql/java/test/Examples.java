@@ -5,6 +5,7 @@ import org.mql.java.views.FirstInterface;
 public class Examples {
 	public Examples() {
 		exp02();
+
 	}
 
 	public void exp02() {
