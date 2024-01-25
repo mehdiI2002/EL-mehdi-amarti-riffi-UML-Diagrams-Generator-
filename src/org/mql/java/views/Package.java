@@ -17,27 +17,27 @@ public class Package extends JPanel {
 
 	public Package(String name) {
 		this.name = name;
-
 	}
 
 	public void drawPackage() {
 		JLabel nomPackage = new JLabel(name);
 		Font font = new Font("Times New Roman", Font.BOLD, 20);
 		nomPackage.setFont(font);
+
 		JPanel packageContainer = new JPanel();
-		packageContainer.setPreferredSize(new Dimension(400, 300));
 		packageContainer.setLayout(new BoxLayout(packageContainer, BoxLayout.Y_AXIS));
+
 		JPanel pannelEntete = new JPanel();
 		packageContainer.add(pannelEntete);
-		pannelEntete.setPreferredSize(new Dimension(400, 100));
-		pannelEntete.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 50));
+		pannelEntete.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
 		JPanel entete = new JPanel();
-		entete.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		entete.setLayout(new FlowLayout(FlowLayout.LEFT));
 		entete.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		entete.setPreferredSize(new Dimension(70, 60));
-		pannelEntete.add(entete);
 		entete.add(nomPackage);
+		pannelEntete.add(entete);
 		body = new JPanel();
+
 		body.setPreferredSize(new Dimension(400, 200));
 		packageContainer.add(body);
 		body.setBorder(BorderFactory.createLineBorder(Color.BLACK));

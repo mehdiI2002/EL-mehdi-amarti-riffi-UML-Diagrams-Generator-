@@ -13,5 +13,4 @@ public class SecondInterface extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 	}
-
 }

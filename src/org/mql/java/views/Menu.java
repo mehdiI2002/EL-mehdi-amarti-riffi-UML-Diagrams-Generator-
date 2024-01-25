@@ -84,7 +84,6 @@ public class Menu extends JMenuBar implements ActionListener {
 			frame.pack();
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		} else if (e.getSource().equals(i2)) {
-			System.out.println(pack.getDirectories());
 			GeneratePackages packages = new GeneratePackages(pack.getDirectories());
 			packages.drawPackages(filePath);
 			JScrollPane scroll = new JScrollPane(packages);

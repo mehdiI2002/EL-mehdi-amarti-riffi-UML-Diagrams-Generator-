@@ -32,11 +32,14 @@ public class FirstInterface extends JFrame {
 		LabledTextField labeled = new LabledTextField("Projet Path", 70, 120);
 		container.add(labeled);
 		container.add(Box.createVerticalGlue());
+
 		Button button1 = new Button("Browse", labeled.getT1(), filePath);
 		Button button2 = new Button("Generate", labeled.getT1(), filePath);
 		containerButton.add(button2);
 		containerButton.add(button1);
+
 		container.add(containerButton);
+		containerButton.revalidate();
 		add(container);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
