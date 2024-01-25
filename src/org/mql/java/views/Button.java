@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Button extends JButton implements ActionListener {
@@ -19,7 +20,6 @@ public class Button extends JButton implements ActionListener {
 		this.textField = textField;
 		this.filePath = filePath;
 		addActionListener(this);
-
 	}
 
 	@Override
@@ -28,14 +28,16 @@ public class Button extends JButton implements ActionListener {
 			showDirectoryChooser();
 		}
 		if ("Generate".equals(label)) {
+			if (textField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Please insert a path!!", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				SecondInterface second = new SecondInterface();
+				Menu menu = new Menu("diagramme de classe", "diagramme de package", textField, filePath, second);
+				menu.addMenu();
 
-			SecondInterface second = new SecondInterface();
-			Menu menu = new Menu("diagramme de classe", "diagramme de package", textField, filePath, second);
-			menu.addMenu();
-
-			second.setJMenuBar(menu.getMb());
+				second.setJMenuBar(menu.getMb());
+			}
 		}
-
 	}
 
 	private JTextField showDirectoryChooser() {

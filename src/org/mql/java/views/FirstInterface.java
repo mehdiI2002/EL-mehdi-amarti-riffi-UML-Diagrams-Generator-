@@ -6,6 +6,7 @@ import java.awt.Font;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +23,8 @@ public class FirstInterface extends JFrame {
 	}
 
 	public void drawFirstInterface(String filePath) {
+		ImageIcon icon = new ImageIcon("icons\\uml_logo.png");
+		setIconImage(icon.getImage());
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		containerButton.setLayout(new FlowLayout(FlowLayout.CENTER));
 		container.add(Box.createVerticalGlue());
@@ -37,7 +40,8 @@ public class FirstInterface extends JFrame {
 		Button button2 = new Button("Generate", labeled.getT1(), filePath);
 		containerButton.add(button2);
 		containerButton.add(button1);
-
+		containerButton.revalidate();
+		containerButton.repaint();
 		container.add(containerButton);
 		containerButton.revalidate();
 		add(container);
@@ -46,7 +50,6 @@ public class FirstInterface extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setResizable(false);
-
 	}
 
 }
